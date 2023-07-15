@@ -1,0 +1,91 @@
+package com.example.simplecrm;
+
+import java.util.ArrayList;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+// @RestController = @Controller + @ResponseBody
+@RestController
+@RequestMapping("/customers")
+public class CustomerController {
+
+  private ArrayList<Customer> customers = new ArrayList<>();
+
+  @GetMapping("/test")
+  public String test() {
+    return "hello";
+  }
+
+  // CRUD
+  // 1. CREATE
+  @PostMapping("")
+  public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+    // @RequestBody de-serializes the JSON and convert into Java object
+
+    // Add the new customer to the ArrayList
+    customers.add(customer);
+    return new ResponseEntity<>(customer, HttpStatus.CREATED);
+    // return ResponseEntity.status(HttpStatus.CREATED).body(customer)
+
+  }
+
+  // 2. READ (Get and Get All)
+  // Get All Customers
+  @GetMapping("")
+  public ResponseEntity<ArrayList<Customer>> getAllCustomers() {
+    return new ResponseEntity<>(customers, HttpStatus.OK);
+  }
+
+  // Get Customer
+  @GetMapping("/{id}")
+  public ResponseEntity<Customer> getCustomer(@PathVariable String id) {
+    return new ResponseEntity<>(customers.get(findIndexById(id)), HttpStatus.OK);
+  }
+
+  // 3. UPDATE
+  @PutMapping("/{id}")
+  public ResponseEntity<Customer> updateCustomer(@PathVariable String id, @RequestBody Customer customer) {
+
+    Customer customerToUpdate = customers.get(findIndexById(id));
+    customerToUpdate.setFirstName(customer.getFirstName());
+    customerToUpdate.setLastName(customer.getLastName());
+    customerToUpdate.setEmail(customer.getEmail());
+    customerToUpdate.setContactNo(customer.getContactNo());
+    customerToUpdate.setJobTitle(customer.getJobTitle());
+    customerToUpdate.setYearOfBirth(customer.getYearOfBirth());
+    return new ResponseEntity<>(customerToUpdate, HttpStatus.OK);
+
+  }
+
+  // 4. DELETE
+  @DeleteMapping("/{id}")
+  public ResponseEntity<HttpStatus> deleteCustomer(@PathVariable String id) {
+    customers.remove(findIndexById(id));
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
+  // Helper Method
+  private int findIndexById(String id) {
+
+    for (Customer customer : customers) {
+      if (customer.getId().equals(id)) {
+        return customers.indexOf(customer);
+      }
+    }
+
+    return -1;
+
+  }
+
+}

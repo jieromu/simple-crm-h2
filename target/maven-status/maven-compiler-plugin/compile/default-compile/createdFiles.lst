@@ -1,0 +1,12 @@
+com/example/simplecrm/InteractionRepository.class
+com/example/simplecrm/InteractionService.class
+com/example/simplecrm/CustomerServiceImpl.class
+com/example/simplecrm/Customer.class
+com/example/simplecrm/InteractionServiceImpl.class
+com/example/simplecrm/InteractionController.class
+com/example/simplecrm/Interaction.class
+com/example/simplecrm/SimpleCrmApplication.class
+com/example/simplecrm/CustomerService.class
+com/example/simplecrm/CustomerNotFoundException.class
+com/example/simplecrm/CustomerController.class
+com/example/simplecrm/CustomerRepository.class
